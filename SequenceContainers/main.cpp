@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<array>
 #include<stdexcept>
 #include <fenv.h> 
@@ -42,7 +42,7 @@ void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef STL_ARRAY
-	//array - это контейнер который хранит данные в виде статического массива;
+	//array - СЌС‚Рѕ РєРѕРЅС‚РµР№РЅРµСЂ РєРѕС‚РѕСЂС‹Р№ С…СЂР°РЅРёС‚ РґР°РЅРЅС‹Рµ РІ РІРёРґРµ СЃС‚Р°С‚РёС‡РµСЃРєРѕРіРѕ РјР°СЃСЃРёРІР°;
 	throw;
 	const int n = 5;
 	std::array<int, n> arr;
