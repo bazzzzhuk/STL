@@ -1,25 +1,40 @@
-//SequenceContainers
 #include<iostream>
 #include<array>
+#include<stdexcept>
+#include <fenv.h> 
+#include<cmath>
 
 #define tab "\t"
-using namespace std;
+//using namespace std;
 using std::cout;
 using std::cin;
 using std::endl;
 
-try
-{
 	unsigned long long int factorial(int n)
 	{
-		if (n == 0) return 1;
-		return n * factorial(n - 1);
-	}
-}
-catch (const std::exception&)
-{
+		try
+		{
+			if (n == 0) return 1;
+			if (math_errhandling & MATH_ERREXCEPT) {
+				if (fetestexcept(FE_OVERFLOW)) throw FE_OVERFLOW;
+			}
+			return n * factorial(n - 1);
+		}
 
-}
+		catch (const std::overflow_error& ofe)
+		{
+			std::cerr << ofe.what() << endl;
+		}
+		//catch (const FE_OVERFLOW)
+		//{
+		//	//std::cerr << ofe.what() << endl;
+		//}
+		catch (...)
+		{
+			std::cerr << "Error...Maybe try with a smaller number?!" << endl;
+		}
+	}
+
 
 //#define STL_ARRAY
 #define STL_EXCEPTION_HW
@@ -67,7 +82,6 @@ void main()
 		int n;
 		cout << "Enter factorial of number: "; cin >> n;
 		cout << "Rezult: " << factorial(n) << endl;
-	
 
 #endif // STL_EXCEPTION_HW
 
