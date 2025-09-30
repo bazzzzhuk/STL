@@ -15,23 +15,22 @@ using std::endl;
 		try
 		{
 			if (n == 0) return 1;
-			if (math_errhandling & MATH_ERREXCEPT) {
+			/*if (math_errhandling & MATH_ERREXCEPT) {
 				if (fetestexcept(FE_OVERFLOW)) throw FE_OVERFLOW;
-			}
+			}*/
 			return n * factorial(n - 1);
 		}
-
 		catch (const std::overflow_error& ofe)
 		{
 			std::cerr << ofe.what() << endl;
 		}
-		//catch (const FE_OVERFLOW)
+		//catch (FE_OVERFLOW)
 		//{
-		//	//std::cerr << ofe.what() << endl;
+		//	//std::cerr << "" << endl;
 		//}
 		catch (...)
 		{
-			std::cerr << "Error...Maybe try with a smaller number?!" << endl;
+			std::cerr << "Arithmetic overflow?...Maybe try with a smaller number?!" << endl;
 		}
 	}
 
