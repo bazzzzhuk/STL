@@ -1,6 +1,7 @@
 ﻿#include<iostream>
 #include<array>
 #include<vector>
+#include<list>
 #include<stdexcept>
 #include <fenv.h> 
 #include<cmath>
@@ -35,11 +36,18 @@ using std::endl;
 			std::cerr << "Arithmetic overflow?...Maybe try with a smaller number?!" << endl;
 		}
 	}
-
+	
+	std::list<int>::const_iterator operator+(std::list<int>::const_iterator list1, int n)
+	{
+		for (int i = 0; i < n; i++, ++list1);
+		return list1;
+	}
 	template<typename T>void vector_info(const std::vector<T>& vec);
+	template<typename T>void list_info(const std::list<T>& list1);
 
 //#define STL_ARRAY
 #define STL_VECTOR
+#define STL_LIST
 //#define STL_EXCEPTION_HW
 
 void main()
@@ -88,31 +96,53 @@ void main()
 	vector_info(vec);
 	cout << endl;
 	vec.push_back(55);
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
-		cout << *it << tab;
-	vector_info(vec);
-	cout << endl;
-	for(std::vector<int>::reverse_iterator it=vec.rbegin();it!=vec.rend(); ++it)
-		cout << *it << tab;
-	vector_info(vec);
-	cout << endl;
-	cout << "shrink_to_fit" << endl;
-	//vec.shrink_to_fit();
-	/*vector_info(vec);
-	vec.reserve(1600);
-	vec.push_back(1024);*/
-	vec.resize(18);
-	for (int i : vec)cout << i << tab;
-	vector_info(vec);
-	cout << "insert" << endl;
+	//for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+	//	cout << *it << tab;
+	//vector_info(vec);
+	//cout << endl;
+	//for(std::vector<int>::reverse_iterator it=vec.rbegin();it!=vec.rend(); ++it)
+	//	cout << *it << tab;
+	//vector_info(vec);
+	//cout << endl;
+	//cout << "shrink_to_fit" << endl;
+	////vec.shrink_to_fit();
+	///*vector_info(vec);
+	//vec.reserve(1600);
+	//vec.push_back(1024);*/
+	//vec.resize(18);
+	//for (int i : vec)cout << i << tab;
+	//vector_info(vec);
+	//cout << "insert" << endl;
+	//int value;
+	//cout << "Enter index: "; cin >> index;
+	//cout << "Enter value: "; cin >> value;
+	//vec.insert(vec.begin() + index, value);
+	//for (int i : vec)cout << i << tab;
+	///>>--->
 	int index;
-	int value;
-	cout << "Enter index: "; cin >> index;
-	cout << "Enter value: "; cin >> value;
-	vec.insert(vec.begin() + index, value);
-	for (int i : vec)cout << i << tab;
+	cout << "VECTOR: Enter index to erase element: "; cin >> index;
+	vec.erase(vec.begin() + index);
+	vector_info(vec);
+
 
 #endif // STL_VECTOR
+#ifdef STL_LIST
+	cout << ">>---> STL::LIST <---<<";
+	std::list<int> list1 = { 0,1,1,2,3,5,8,13,21,34 };
+	cout << DILIMITER;
+	cout << "Alternative Output: "<<endl;
+	for (std::list<int>::iterator it = list1.begin(); it != list1.end(); ++it)
+		cout << *it << tab;
+	cout << DILIMITER;
+	list_info(list1);	
+	cout << "LIST: ...\"добавить в него значение по индексу\"" << endl;
+	list1.emplace(list1.begin()+3, 55);
+	list_info(list1);
+	cout << "LIST: ...\"Удалить значение по индексу...\"" << endl;
+	list1.erase(list1.begin() + 3);
+	list_info(list1);
+#endif // STL_LIST
+
 #ifdef STL_EXCEPTION_HW
 
 		int n;
@@ -124,7 +154,7 @@ void main()
 }
 template<typename T>void vector_info(const std::vector<T>& vec)
 {
-	cout << endl;
+	cout << ">>---> VECTOR" << endl;
 	cout << "Size:\t" << vec.size() << endl;//фактический размер Вектора, сколько элементов хранит вектор
 	cout << "Max_Size:\t" << vec.max_size() << endl;
 	cout << "Capacity:\t" << vec.capacity() << endl;//Объем зарезервированной памяти. 
@@ -135,5 +165,15 @@ template<typename T>void vector_info(const std::vector<T>& vec)
 	// но если зарезервированная память закончилась, то при добавлении элемента вектор резервирует новую память
 	// в половину больше фактического размера(в 1.5 раза больше фактического размера)
 	// На CAPACITY можно повлиять при помощи методов reserve(), resize(), shrink_to_fit().
-	cout << DILIMITER << endl;
+	for (int i : vec)cout << i << tab;
+	cout << DILIMITER;
+}
+template<typename T>void list_info(const std::list<T>& list1)
+{
+	cout << ">>---> LIST" << endl;
+	cout << "Size:\t" << list1.size() << endl;//фактический размер Вектора, сколько элементов хранит вектор
+	cout << "Max_Size:\t" << list1.max_size() << endl;
+	for (int i : list1)cout << i << tab;
+	cout << DILIMITER;
+
 }
