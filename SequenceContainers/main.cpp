@@ -3,9 +3,11 @@
 #include<vector>
 #include<list>
 #include<forward_list>
+#include<deque>
 #include<stdexcept>
 #include <fenv.h> 
 #include<cmath>
+#include<iterator>
 
 #define tab "\t"
 #define DILIMITER "\n===============================\n"
@@ -40,7 +42,8 @@ unsigned long long int factorial(int n)
 
 std::list<int>::const_iterator operator+(std::list<int>::const_iterator list1, int n)
 {
-	for (int i = 0; i < n; i++, ++list1);
+	//for (int i = 0; i < n; i++, ++list1);
+	std::advance(list1, n);
 	return list1;
 }
 std::forward_list<int>::const_iterator operator+(std::forward_list<int>::const_iterator f_list, int n)
@@ -49,13 +52,15 @@ std::forward_list<int>::const_iterator operator+(std::forward_list<int>::const_i
 	return f_list;
 }
 template<typename T>void vector_info(const std::vector<T>& vec);
+template<typename T>void deque_info(const std::deque<T>& vec);
 template<typename T>void list_info(const std::list<T>& list1);
 template<typename T>void f_list_info(const std::forward_list<T>& f_list);
 
 //#define STL_ARRAY
 #define STL_VECTOR
-#define STL_LIST
-#define STL_FORWARD_LIST
+#define STL_DEQUE
+//#define STL_LIST
+//#define STL_FORWARD_LIST
 //#define STL_EXCEPTION_HW
 
 void main()
@@ -138,6 +143,18 @@ void main()
 
 
 #endif // STL_VECTOR
+#ifdef STL_DEQUE
+	std::deque<int> deque = { 3,5,8,13,21 };
+	deque.push_back(34);
+	deque.push_front(2);
+	
+	deque_info(deque);
+	deque.assign(vec.begin()+3, vec.end()-3);
+	for(int i : deque)cout << i << tab;
+
+	//std::vector<int> vec;
+	//vec.data();
+#endif
 #ifdef STL_LIST
 	cout << ">>---> STL::LIST <---<<";
 	std::list<int> list1 = { 0,1,1,2,3,5,8,13,21,34 };
@@ -200,6 +217,14 @@ template<typename T>void vector_info(const std::vector<T>& vec)
 	// но если зарезервированная память закончилась, то при добавлении элемента вектор резервирует новую память
 	// в половину больше фактического размера(в 1.5 раза больше фактического размера)
 	// На CAPACITY можно повлиять при помощи методов reserve(), resize(), shrink_to_fit().
+	for (int i : vec)cout << i << tab;
+	cout << DILIMITER;
+}
+template<typename T>void deque_info(const std::deque<T>& vec)
+{
+	cout << ">>---> DEQUE" << endl;
+	cout << "Size:\t" << vec.size() << endl;
+	cout << "Max_Size:\t" << vec.max_size() << endl;
 	for (int i : vec)cout << i << tab;
 	cout << DILIMITER;
 }
