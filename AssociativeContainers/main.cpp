@@ -35,7 +35,7 @@ void main()
 	for (std::pair<int, std::string> i : week)
 		cout << i.first << tab << i.second << endl;
 	cout << DELIMITER;
-
+	cout << "DICTIONARY -> —Ћќ¬ј–№";
 	std::map<std::string, std::list<std::string>>dictionary =
 	{
 		{"occasionaly",{"иногда","¬рем€ от времени","случайно","изредко"}},
@@ -45,8 +45,14 @@ void main()
 		{"sequence",{"последовательность","р€д","эпизод"}},
 		{"consequence",{"следствие","последствие","вывод"}}
 	};
-
-
+	cout << DELIMITER;
+	for (std::map<std::string, std::list<std::string>>::iterator maper = dictionary.begin(); maper != dictionary.end(); ++maper)
+	{
+		cout << "—лово: " << maper->first << endl<<"ќзначает: ";
+		//for (std::list<std::string>::iterator sec = maper->second.begin(); cout<<" ", sec != maper->second.end(); ++sec)cout << *sec << (sec!=--maper->second.end() ? "," : ".");
+		//cout << DELIMITER;
+		//for (std::string elem : maper->second) cout << elem << (elem == maper._Getcont() ? "," : "."); cout << DELIMITER;
+	}
 #endif
 
 }
