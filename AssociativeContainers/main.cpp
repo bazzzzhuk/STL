@@ -1,58 +1,150 @@
-#include<iostream>
+п»ї#include<iostream>
+#include <iomanip>
 #include<map>
 #include<list>
+#include<forward_list>
+
+#include<conio.h>
+
 //using namespace std;
 using std::cout;
 using std::cin;
 using std::endl;
 
 #define tab "\t"
-#define DELIMITER "\n================\n"
+#define DELIMITER "\n==========================\n"
 
-#define STL_MAP
+//#define STL_MAP_WEEK
+//#define STL_MAP_DICTIONARY
+#define OOO_GIBDD
+class GIBDD;
+//void Enter_penalty(GIBDD gibdd);
+//void Menu(GIBDD);
 
+class GIBDD
+{
+	std::map<std::string, std::list<std::string>>dataBase_penalty = { {"РќРѕРјРµСЂ Р°РІС‚Рѕ", {"РЁС‚СЂР°С„С‹"}} };
+	/*struct Number_auto
+	{
+		char letter;
+		std::string number;
+		std::string letters;
+		std::string region;
+	};*/
+public:
+	GIBDD() {};
+
+	GIBDD(std::map<std::string, std::string> maper)
+	{
+		cout << " " << endl;
+	}
+	~GIBDD()
+	{
+	}
+	void Enter_penalty()
+	{
+		std::string number;
+		std::string penalty;
+		cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ Р°РІС‚Рѕ: \t"; cin >> number;
+		cout << "Р’РІРµРґРёС‚Рµ С€С‚СЂР°С„: \t"; cin >> penalty;
+		add_gibdd(number, penalty);
+	}
+	void add_gibdd(std::string number, std::string penalty)
+	{
+
+		dataBase_penalty.insert({ number, {penalty} });
+		cout << " " << endl;
+	}
+	void Menu()
+	{
+		cout << "1. Р’РІРµСЃС‚Рё РЅРѕРІС‹Р№ С€С‚СЂР°С„" << endl;
+		cout << "2. РџСЂРѕРІРµСЂРёС‚СЊ С€С‚СЂР°С„С‹ РїРѕ РЅРѕРјРµСЂСѓ" << endl;
+		cout << "3. РџРѕР»РЅР°СЏ СЂР°СЃРїРµС‡Р°С‚РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…" << endl;
+
+		char key;
+		key = _getch();
+
+		switch (key)
+		{
+		case '1': Enter_penalty(); break;
+		case '2': cout << "two" << endl; break;
+		case '3': print(); break;
+		default: Menu();
+			break;
+		}
+		Menu();
+	};
+	void print()const
+	{
+		cout << DELIMITER << endl;
+
+		/*for (std::pair<std::string, std::list<std::string>>maper : dataBase_penalty)
+		{
+			cout << maper.first<<tab tab tab;
+			for (std::string sec : maper.second) cout << sec << "\t"; cout << DELIMITER;
+		}*/
+		
+		for (std::map<std::string, std::list<std::string>>::const_reverse_iterator maper = dataBase_penalty.crbegin(); maper != dataBase_penalty.crend(); ++maper)
+		{
+			cout.width(15);
+			cout << std::left << maper->first;
+			for (std::list<std::string>::const_iterator sec = maper->second.begin(); sec != maper->second.end(); ++sec)cout << *sec << (sec != --maper->second.end() ? "," : ".");
+			cout << DELIMITER;
+			//for (std::string sec : maper->second) cout << sec << (sec == *maper.end() ? "," : "."); cout << delimiter;
+		}
+	}
+};
 void main()
 {
 	setlocale(LC_ALL, "");
 
-#ifdef STL_MAP
+#ifdef STL_MAP_WEEK
 	std::map<int, std::string> week =
 	{
-		std::pair<int, std::string>(0, "Воскресенье"),
-		std::pair<int, std::string>(1, "Понедельник"),
-		std::pair<int, std::string>(2, "Вторник"),
-		std::pair<int, std::string>(3, "Среда"),
-		{4,"Четверг"},
-		{5,"Пятница"},
-		{6,"Суббота"},
-		{7,"Воскресенье"}
+		std::pair<int, std::string>(0, "Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ"),
+		std::pair<int, std::string>(1, "РџРѕРЅРµРґРµР»СЊРЅРёРє"),
+		std::pair<int, std::string>(2, "Р’С‚РѕСЂРЅРёРє"),
+		std::pair<int, std::string>(3, "РЎСЂРµРґР°"),
+		{4,"Р§РµС‚РІРµСЂРі"},
+		{5,"РџСЏС‚РЅРёС†Р°"},
+		{6,"РЎСѓР±Р±РѕС‚Р°"},
+		{7,"Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ"}
 	};
-	for(std::map<int, std::string>::iterator it = week.begin(); it != week.end(); ++it)
+	for (std::map<int, std::string>::iterator it = week.begin(); it != week.end(); ++it)
 	{
 		cout << it->first << tab << it->second << endl;
 	}
 	cout << DELIMITER;
 	for (std::pair<int, std::string> i : week)
 		cout << i.first << tab << i.second << endl;
+#endif
+#ifdef STL_MAP_DICTIONARY
 	cout << DELIMITER;
-	cout << "DICTIONARY -> СЛОВАРЬ";
+	cout << "DICTIONARY -> РЎР›РћР’РђР Р¬";
 	std::map<std::string, std::list<std::string>>dictionary =
 	{
-		{"occasionaly",{"иногда","Время от времени","случайно","изредко"}},
-		{"causes",{"причина","приводить к..."}},
-		{"space",{"космос","пространство","пробел"}},
-		{"void",{"пустота","вакуум","пробел"}},
-		{"sequence",{"последовательность","ряд","эпизод"}},
-		{"consequence",{"следствие","последствие","вывод"}}
+		{"occasionaly",{"РёРЅРѕРіРґР°","Р’СЂРµРјСЏ РѕС‚ РІСЂРµРјРµРЅРё","СЃР»СѓС‡Р°Р№РЅРѕ","РёР·СЂРµРґРєРѕ"}},
+		{"causes",{"РїСЂРёС‡РёРЅР°","РїСЂРёРІРѕРґРёС‚СЊ Рє..."}},
+		{"space",{"РєРѕСЃРјРѕСЃ","РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ","РїСЂРѕР±РµР»"}},
+		{"void",{"РїСѓСЃС‚РѕС‚Р°","РІР°РєСѓСѓРј","РїСЂРѕР±РµР»"}},
+		{"sequence",{"РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ","СЂСЏРґ","СЌРїРёР·РѕРґ"}},
+		{"consequence",{"СЃР»РµРґСЃС‚РІРёРµ","РїРѕСЃР»РµРґСЃС‚РІРёРµ","РІС‹РІРѕРґ"}}
 	};
 	cout << DELIMITER;
 	for (std::map<std::string, std::list<std::string>>::iterator maper = dictionary.begin(); maper != dictionary.end(); ++maper)
 	{
-		cout << "Слово: " << maper->first << endl<<"Означает: ";
-		//for (std::list<std::string>::iterator sec = maper->second.begin(); cout<<" ", sec != maper->second.end(); ++sec)cout << *sec << (sec!=--maper->second.end() ? "," : ".");
-		//cout << DELIMITER;
-		//for (std::string elem : maper->second) cout << elem << (elem == maper._Getcont() ? "," : "."); cout << DELIMITER;
+		cout << "РЎР»РѕРІРѕ: " << maper->first << endl << "\tРћР·РЅР°С‡Р°РµС‚: ";
+		for (std::list<std::string>::iterator sec = maper->second.begin(); cout << " ", sec != maper->second.end(); ++sec)cout << *sec << (sec != --maper->second.end() ? "," : ".");
+		cout << DELIMITER;
+		//for (std::string sec : maper->second) cout << sec << (sec == *maper.end() ? "," : "."); cout << DELIMITER;
 	}
-#endif
+#endif // STL_MAP_DICTIONARY
+#ifdef OOO_GIBDD
+
+
+	GIBDD gibdd;
+	gibdd.Menu();
+
+#endif // OOO_GIBDD
 
 }
