@@ -18,8 +18,6 @@ using std::endl;
 //#define STL_MAP_DICTIONARY
 #define OOO_GIBDD
 class GIBDD;
-//void Enter_penalty(GIBDD gibdd);
-//void Menu(GIBDD);
 
 class GIBDD
 {
@@ -51,7 +49,6 @@ public:
 	}
 	void add_gibdd(std::string number, std::string penalty)
 	{
-
 		dataBase_penalty.insert({ number, {penalty} });
 		cout << " " << endl;
 	}
@@ -69,7 +66,7 @@ public:
 		case '1': Enter_penalty(); break;
 		case '2': cout << "two" << endl; break;
 		case '3': print(); break;
-		default: Menu();
+		default: system("cls"); Menu();
 			break;
 		}
 		Menu();
@@ -77,13 +74,13 @@ public:
 	void print()const
 	{
 		cout << DELIMITER << endl;
-
+		//Прямой вывод:
 		/*for (std::pair<std::string, std::list<std::string>>maper : dataBase_penalty)
 		{
 			cout << maper.first<<tab tab tab;
 			for (std::string sec : maper.second) cout << sec << "\t"; cout << DELIMITER;
 		}*/
-		
+		//Вывод по-порядку
 		for (std::map<std::string, std::list<std::string>>::const_reverse_iterator maper = dataBase_penalty.crbegin(); maper != dataBase_penalty.crend(); ++maper)
 		{
 			cout.width(15);
@@ -140,11 +137,8 @@ void main()
 	}
 #endif // STL_MAP_DICTIONARY
 #ifdef OOO_GIBDD
-
-
 	GIBDD gibdd;
 	gibdd.Menu();
-
 #endif // OOO_GIBDD
 
 }
