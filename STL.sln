@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SequenceContainers", "Seque
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssociativeContainers", "AssociativeContainers\AssociativeContainers.vcxproj", "{3650302B-A0F8-41FB-B915-CDD63F1E8698}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "POLICE", "POLICE\POLICE.vcxproj", "{224CAE51-C443-45A0-A4C6-09F652C094D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{3650302B-A0F8-41FB-B915-CDD63F1E8698}.Release|x64.Build.0 = Release|x64
 		{3650302B-A0F8-41FB-B915-CDD63F1E8698}.Release|x86.ActiveCfg = Release|Win32
 		{3650302B-A0F8-41FB-B915-CDD63F1E8698}.Release|x86.Build.0 = Release|Win32
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Debug|x64.ActiveCfg = Debug|x64
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Debug|x64.Build.0 = Debug|x64
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Debug|x86.ActiveCfg = Debug|Win32
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Debug|x86.Build.0 = Debug|Win32
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Release|x64.ActiveCfg = Release|x64
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Release|x64.Build.0 = Release|x64
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Release|x86.ActiveCfg = Release|Win32
+		{224CAE51-C443-45A0-A4C6-09F652C094D3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

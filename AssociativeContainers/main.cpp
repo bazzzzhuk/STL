@@ -3,6 +3,7 @@
 #include<map>
 #include<list>
 #include<forward_list>
+#include<set>
 
 #include<conio.h>
 
@@ -16,7 +17,8 @@ using std::endl;
 
 //#define STL_MAP_WEEK
 //#define STL_MAP_DICTIONARY
-#define OOO_GIBDD
+//#define OOO_GIBDD
+//#define STL_SET
 class GIBDD;
 
 class GIBDD
@@ -128,17 +130,27 @@ void main()
 		{"consequence",{"следствие","последствие","вывод"}}
 	};
 	cout << DELIMITER;
-	for (std::map<std::string, std::list<std::string>>::iterator maper = dictionary.begin(); maper != dictionary.end(); ++maper)
+	//for (std::map<std::string, std::list<std::string>>::iterator maper = dictionary.begin(); maper != dictionary.end(); ++maper)
+	for(std::pair<std::string, std::list<std::string>> maper:dictionary)
 	{
-		cout << "Слово: " << maper->first << endl << "\tОзначает: ";
-		for (std::list<std::string>::iterator sec = maper->second.begin(); cout << " ", sec != maper->second.end(); ++sec)cout << *sec << (sec != --maper->second.end() ? "," : ".");
-		cout << DELIMITER;
-		//for (std::string sec : maper->second) cout << sec << (sec == *maper.end() ? "," : "."); cout << DELIMITER;
+		cout << "Слово: " << maper.first << endl << "\tОзначает: ";
+		//for (std::list<std::string>::iterator sec = maper->second.begin(); cout << " ", sec != maper->second.end(); ++sec)cout << *sec << (sec != --maper->second.end() ? "," : ".");
+		//cout << DELIMITER;
+		for (std::string sec : maper.second) cout << sec << (sec == *--maper.second.end() ? "." : ","); cout << DELIMITER;
 	}
 #endif // STL_MAP_DICTIONARY
 #ifdef OOO_GIBDD
 	GIBDD gibdd;
 	gibdd.Menu();
 #endif // OOO_GIBDD
+#ifdef STL_SET
+	std::set<int> set = { 1024,512,2048,128,3072,768 };
+	for (std::set<int>::iterator it = set.begin(); it != set.end(); ++it)
+	{
+		cout << *it << tab;
+	}
+	cout << endl;
+#endif // STL_SET
+
 
 }
