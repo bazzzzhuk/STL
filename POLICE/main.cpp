@@ -1,9 +1,14 @@
 #include<iostream>
 #include<fstream>
+#include<string>
 #include<map>
 #include<list>
 
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+
+
 #define DELIMITER "\n============================\n"
 
 const std::map<int, std::string> VIOLATIONS =
@@ -54,6 +59,7 @@ std::ostream& operator<<(std::ostream& os, const Crime& obj)
 }
 void print(const std::map<std::string, std::list<Crime>>& base);
 void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename);
+std::map<std::string, std::list<Crime>> load(const std::string& filename);
 
 void main()
 {
@@ -67,6 +73,8 @@ void main()
 	};
 	print(base);
 	save(base, "base.txt");
+	std::map<std::string, std::list<Crime>> base2 = load("base.txt");
+	print(base2);
 }
 //>>--->
 void print(const std::map<std::string, std::list<Crime>>& base)
@@ -76,7 +84,7 @@ void print(const std::map<std::string, std::list<Crime>>& base)
 		cout << plate->first << ":\n";
 		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
 		{
-			cout <<"\t" << *violation << endl;
+			cout << "\t" << *violation << endl;
 		}
 		cout << DELIMITER;
 	}
@@ -89,12 +97,63 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 		fout << plate->first << ":\n";
 		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
 		{
-			fout <<"\t" << *violation << endl;
+			fout << "\t" << *violation << endl;
 		}
 		fout << DELIMITER;
 	}
 	fout.close();
 	std::string cmd = "notepad ";
 	cmd += filename;
-	system(cmd.c_str());
+	//system(cmd.c_str());
+}
+std::map<std::string, std::list<Crime>> load(const std::string& filename)
+{
+	std::ifstream fin(filename);
+	if (fin.is_open())
+	{
+		std::map<std::string, std::list<Crime>> base = {};
+		std::list<Crime> load_list;
+
+		while (!fin.eof())	//EndOfFile
+		{
+			std::string buffer;
+			std::string buffer2;
+			std::string plate;
+			int violation;
+			std::string place;
+
+			std::getline(fin, buffer);
+			if (buffer.size() < 2 || buffer.size() == 0 || buffer[0] == '=')continue;
+			if (buffer.find(':') != std::string::npos)
+			{
+				plate = buffer.substr(0, buffer.find(':'));
+				cout << plate << endl;
+			}
+			else
+			{
+				for (std::pair<int, std::string> it : VIOLATIONS)
+				{
+					if (buffer.substr(1, buffer.find_last_not_of(' ', 44)) == it.second)
+					{
+						violation = it.first;
+						//cout << violation << endl;
+					}
+				}
+				place = buffer.substr(46, std::string::npos);
+				load_list.push_back({ violation, place });
+				//cout << place << endl;
+				base = { {  plate,{load_list}  } };
+				//base.insert({ plate,{load_list} });
+			}
+		}
+		return base;
+	}
+	else
+	{
+		std::cerr << "Error: File not found" << endl;
+	}
+	//?) Закрываем поток:
+	fin.close();
+	
+
 }
