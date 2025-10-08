@@ -24,7 +24,8 @@ const std::map<int, std::string> VIOLATIONS =
 	{7, "Езда в нетрезвом состоянии"},
 	{8, "Оскорбление инспектора"}
 };
-
+class Crime;
+std::stringstream& operator>>(std::stringstream& ifs, Crime& obj);
 class Crime
 {
 	int violation;
@@ -50,6 +51,11 @@ public:
 	{
 		set_violation(violation);
 		set_place(place);
+	}
+	explicit Crime(const std::string& str)
+	{
+		std::stringstream stream(str);
+		stream >> *this;
 	}
 };
 std::ostream& operator<<(std::ostream& os, const Crime& obj)
@@ -150,11 +156,12 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename)
 			cout << all_crimes << endl;
 			const char delimiters[] = ",";
 			for (char* pch = strtok(all_crimes, delimiters); pch; pch = strtok(NULL, delimiters))
+				base[licence_plate].push_back(Crime(pch));
 			{
-				Crime crime(0,"");
+				/*Crime crime(0,"");
 				std::stringstream stream(pch);
 				stream >> crime;
-				base[licence_plate].push_back(crime);
+				base[licence_plate].push_back(crime);*/				
 			}
 		}
 	}
