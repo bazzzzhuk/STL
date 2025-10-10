@@ -11,7 +11,7 @@ using std::cin;
 using std::endl;
 
 
-#define DELIMITER "\n============================\n"
+#define DELIMITER "\n=============================================\n"
 
 const std::map<int, std::string> VIOLATIONS =
 {
@@ -51,17 +51,22 @@ public:
 	}
 	std::string get_time() const
 	{
-		char stringtime[256]{};
+		char stringtime[128]{};
 		strcpy(stringtime, asctime(&time));
 		stringtime[strlen(stringtime) - 1] = 0;
 		return stringtime;
 	}
-	std::string save_time()const
+	time_t get_timestamp()const
 	{
-		char stringtime[64]{};
+		tm time_copy = time;
+		return mktime(&time_copy);
+	}
+	/*std::string save_time()const
+	{
+		char stringtime[256]{};
 		strftime(stringtime, 64, "%Y.%m.%d_%H.%M", &time);
 		return stringtime;
-	}
+	}*/
 	void set_time(const std::string& time)
 	{
 		char timestring[256] = {};
@@ -69,7 +74,7 @@ public:
 		//YYYY.MM.DD HH.MM
 		int parts[5] = {};
 		int n = 0;
-		const char delimiters[] = "._/-:";
+		const char delimiters[] = "._/-: ";
 		for (char* pch = strtok(timestring, delimiters); pch; pch = strtok(NULL, delimiters))
 			parts[n++] = std::atoi(pch);
 		this->time = {};
@@ -78,6 +83,10 @@ public:
 		this->time.tm_mday = parts[2];
 		this->time.tm_hour = parts[3];
 		this->time.tm_min = parts[4];
+	}
+	void set_time(time_t time)
+	{
+		this->time = *localtime(&time);
 	}
 	Crime(int violation, const std::string& place, const std::string& time)
 	{
@@ -91,23 +100,36 @@ public:
 		stream >> *this;
 	}
 };
+//std::ostream& operator<<(std::ostream& os, const Crime& obj)
+//{
+//	os.width(24);
+//	os << std::left;
+//	return os << obj.get_time() << " ---> " << VIOLATIONS.at(obj.get_violation()) << "  на  " << obj.get_place();
+//}
 std::ostream& operator<<(std::ostream& os, const Crime& obj)
 {
 	os.width(24);
 	os << std::left;
-	return os << obj.get_time() << " ---> " << VIOLATIONS.at(obj.get_violation()) << "  на  " << obj.get_place();
+	return os <<  obj.get_time()<<"  " << VIOLATIONS.at(obj.get_violation()) << " на " << obj.get_place() << " " << obj.get_timestamp() << "  ";
 }
+//std::ofstream& operator<<(std::ofstream& ofs, const Crime& obj)
+//{
+//	ofs << obj.save_time() << " " << obj.get_violation() << " " << obj.get_place();
+//	return ofs;
+//}
 std::ofstream& operator<<(std::ofstream& ofs, const Crime& obj)
 {
-	ofs << obj.save_time() << " " << obj.get_violation() << " " << obj.get_place();
+	ofs << " " << obj.get_violation() << " " << obj.get_timestamp() << " " << obj.get_place();
 	return ofs;
 }
 std::stringstream& operator>>(std::stringstream& ifs, Crime& obj)
-{
+{/*
 	std::string time;
-	ifs >> time;
+	ifs >> time;*/
 	int violation;
 	ifs >> violation;
+	time_t time;
+	ifs >> time;
 	std::string place;
 	std::getline(ifs, place);
 	obj.set_time(time);
@@ -165,11 +187,11 @@ void main()
 //>>--->
 void print(const std::map<std::string, std::list<Crime>>& base)
 {
-	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate)
+	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.cbegin(); plate != base.cend(); ++plate)
 	{
 		cout << plate->first << ":\n";
-		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
-			cout << *violation;
+		for (std::list<Crime>::const_iterator violation = plate->second.cbegin(); violation != plate->second.cend(); ++violation)
+			cout << *violation<<endl;
 		cout << DELIMITER;
 	}
 }
@@ -179,11 +201,11 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate)
 	{
 		fout << plate->first << ":";
-		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(), cout<<","; ++violation)
+		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
 		{
-			fout << *violation;
+			fout << *violation << ",";
 		}
-		fout << endl;
+		fout << '\n';
 	}
 	fout.close();
 	std::string cmd = "notepad ";
@@ -201,17 +223,21 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename)
 			std::string licence_plate;
 			std::getline(fin, licence_plate, ':');
 			cout << licence_plate << "\t";
-			const int SIZE = 1024 * 500;
+			const int SIZE = 1024;
 			// time_crime[SIZE];
 			/*std::string time_crime;
 			std::getline(fin, time_crime, ',');
 			base[licence_plate].push_back(Crime(time_crime));
 			cout << time_crime << " ";*/
 			char all_crimes[SIZE];
-			fin.getline(all_crimes, SIZE);
+			fin.getline(all_crimes, SIZE,'\n');
 			cout << all_crimes << endl;
 			const char delimiters[] = ",";
-			for (char* pch = strtok(all_crimes, delimiters); pch; pch = strtok(NULL, delimiters))
+			for (
+				char* pch = strtok(all_crimes, ",");
+				pch; 
+				pch = strtok(NULL, ",")
+				)
 			{
 				base[licence_plate].push_back(Crime(pch));
 			}
